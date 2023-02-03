@@ -14,18 +14,17 @@ class PlayerConstants {
         UNKNOWN, INVALID_PARAMETER_IN_REQUEST, HTML_5_PLAYER, VIDEO_NOT_FOUND, VIDEO_NOT_PLAYABLE_IN_EMBEDDED_PLAYER
     }
 
-    enum class PlaybackRate {
-        UNKNOWN, RATE_0_25, RATE_0_5, RATE_1, RATE_1_5, RATE_2
+    @JvmInline
+    value class PlaybackRate(val rate: Float) {
+        companion object {
+            val UNKNOWN = PlaybackRate(0f)
+            val RATE_0_25 = PlaybackRate(0.25f)
+            val RATE_0_5 = PlaybackRate(0.5f)
+            val RATE_1 = PlaybackRate(1f)
+            val RATE_1_5 = PlaybackRate(1.5f)
+            val RATE_2 = PlaybackRate(2f)
+        }
     }
-}
 
-fun PlayerConstants.PlaybackRate.toFloat(): Float {
-    return when (this) {
-        PlayerConstants.PlaybackRate.UNKNOWN -> 1f
-        PlayerConstants.PlaybackRate.RATE_0_25 -> 0.25f
-        PlayerConstants.PlaybackRate.RATE_0_5 -> 0.5f
-        PlayerConstants.PlaybackRate.RATE_1 -> 1f
-        PlayerConstants.PlaybackRate.RATE_1_5 -> 1.5f
-        PlayerConstants.PlaybackRate.RATE_2 -> 2f
-    }
+
 }
