@@ -46,7 +46,7 @@ artifacts {
     archives javadocJar
 }
 
-group = "com.songsterr.androidyoutubeplayer"
+group = "com.songsterr"
 
 afterEvaluate {
     publishing {

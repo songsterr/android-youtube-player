@@ -28,7 +28,7 @@ dependencies {
 }
 
 ext {
-    PUBLISH_ARTIFACT_ID = 'chromecast-sender'
+    PUBLISH_ARTIFACT_ID = 'androidyoutubeplayer-chromecast-sender'
     PUBLISH_DESCRIPTION = 'Extension for the android-youtube-player:core library, that enables Chromecast compatibility.'
 }
 
