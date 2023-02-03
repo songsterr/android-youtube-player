@@ -1,6 +1,23 @@
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
+
+def tagName = "1.0.0"
+def branch = System.getenv('GIT_BRANCH')
+
+if (branch == null || branch.length() == 0) {
+    branch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+}
+
+branch = branch.replace('origin/', '')
+
+if (branch != "master") {
+    tagName += "-SNAPSHOT"
+}
+
+// Friendly print the version output to the Gradle console
+printf("\n--------VERSION DATA--------\n" +
+        "- NAME: " + tagName + "\n----------------------------\n")
+
 
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
@@ -29,58 +46,32 @@ artifacts {
     archives javadocJar
 }
 
-group = PUBLISH_GROUP_ID
-version = PUBLISH_VERSION
+group = "com.songsterr.androidyoutubeplayer"
 
 afterEvaluate {
     publishing {
-        publications {
-            release(MavenPublication) {
-                groupId PUBLISH_GROUP_ID
-                artifactId PUBLISH_ARTIFACT_ID
-                version PUBLISH_VERSION
-                if (project.plugins.findPlugin("com.android.library")) {
-                    from components.release
-                } else {
-                    from components.java
+        repositories {
+            maven {
+                name 'maven.songsterr.com'
+                def repo = 's3://maven.songsterr.com.s3.amazonaws.com/'
+                if (tagName.endsWith('-SNAPSHOT')) {
+                    repo += "snapshots/"
                 }
-
-                artifact androidSourcesJar
-                artifact javadocJar
-
-                pom {
-                    name = PUBLISH_ARTIFACT_ID
-                    description = PUBLISH_DESCRIPTION
-                    url = 'https://github.com/PierfrancescoSoffritti/android-youtube-player'
-                    licenses {
-                        license {
-                            name = 'MIT License'
-                            url = 'https://github.com/PierfrancescoSoffritti/android-youtube-player/blob/master/LICENSE'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'psoffritti'
-                            name = 'Pierfrancesco Soffritti'
-                            email = 'soffritti.pierfrancesco@gmail.com'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:github.com/PierfrancescoSoffritti/android-youtube-player.git'
-                        developerConnection = 'scm:git:ssh://github.com/PierfrancescoSoffritti/android-youtube-player.git'
-                        url = 'https://github.com/PierfrancescoSoffritti/android-youtube-player.git'
-                    }
+                url = repo
+                authentication {
+                    awsIm(AwsImAuthentication) // load from EC2 role or env var
                 }
             }
         }
-    }
-}
+        publications {
+            gpr(MavenPublication) {
+                groupId group
+                artifactId PUBLISH_ARTIFACT_ID
+                version tagName
+                artifact(androidSourcesJar)
 
-signing {
-    useInMemoryPgpKeys(
-            rootProject.ext["signing.keyId"],
-            rootProject.ext["signing.key"],
-            rootProject.ext["signing.password"],
-    )
-    sign publishing.publications
+                from components.release
+            }
+        }
+    }
 }
