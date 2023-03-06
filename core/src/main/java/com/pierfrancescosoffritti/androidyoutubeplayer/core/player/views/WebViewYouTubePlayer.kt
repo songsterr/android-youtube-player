@@ -27,7 +27,7 @@ internal class WebViewYouTubePlayer constructor(context: Context, attrs: Attribu
 
     private lateinit var youTubePlayerInitListener: (YouTubePlayer) -> Unit
 
-    private var youTubePlayerListeners = hashSetOf<YouTubePlayerListener>()
+    private var youTubePlayerListeners = setOf<YouTubePlayerListener>()
     private val mainThreadHandler: Handler = Handler(Looper.getMainLooper())
 
     internal var isBackgroundPlaybackEnabled = false
@@ -80,7 +80,7 @@ internal class WebViewYouTubePlayer constructor(context: Context, attrs: Attribu
     }
 
     override fun destroy() {
-        youTubePlayerListeners = hashSetOf()
+        youTubePlayerListeners = setOf()
         mainThreadHandler.removeCallbacksAndMessages(null)
         super.destroy()
     }
@@ -90,11 +90,11 @@ internal class WebViewYouTubePlayer constructor(context: Context, attrs: Attribu
     }
 
     override fun addListener(listener: YouTubePlayerListener) {
-        youTubePlayerListeners += listener
+        youTubePlayerListeners = youTubePlayerListeners + listener
     }
 
     override fun removeListener(listener: YouTubePlayerListener) {
-        youTubePlayerListeners -= listener
+        youTubePlayerListeners = youTubePlayerListeners - listener
     }
 
     @SuppressLint("SetJavaScriptEnabled")
