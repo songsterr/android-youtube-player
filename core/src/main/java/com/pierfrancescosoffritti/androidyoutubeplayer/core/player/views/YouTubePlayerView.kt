@@ -5,9 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.R
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -20,7 +18,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.PlayerUiControlle
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 
 class YouTubePlayerView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
-        SixteenByNineFrameLayout(context, attrs, defStyleAttr), LifecycleObserver {
+        SixteenByNineFrameLayout(context, attrs, defStyleAttr), DefaultLifecycleObserver {
 
     constructor(context: Context): this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet? = null): this(context, attrs, 0)
@@ -133,17 +131,22 @@ class YouTubePlayerView(context: Context, attrs: AttributeSet? = null, defStyleA
      */
     fun enableBackgroundPlayback(enable: Boolean) = legacyTubePlayerView.enableBackgroundPlayback(enable)
 
+    override fun onDestroy(owner: LifecycleOwner) {
+        release()
+    }
+
     /**
      * Call this method before destroying the host Fragment/Activity, or register this View as an observer of its host lifecycle
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun release() = legacyTubePlayerView.release()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private fun onResume() = legacyTubePlayerView.onResume()
+    override fun onResume(owner: LifecycleOwner) {
+        legacyTubePlayerView.onResume(owner)
+    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private fun onStop() = legacyTubePlayerView.onStop()
+    override fun onStop(owner: LifecycleOwner) {
+        legacyTubePlayerView.onStop(owner)
+    }
 
     fun addYouTubePlayerListener(youTubePlayerListener: YouTubePlayerListener) = legacyTubePlayerView.youTubePlayer.addListener(youTubePlayerListener)
 

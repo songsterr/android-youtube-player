@@ -7,9 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -24,7 +22,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.Playbac
  * most of its actions to this one.
  */
 internal class LegacyYouTubePlayerView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
-        SixteenByNineFrameLayout(context, attrs, defStyleAttr), LifecycleObserver {
+        SixteenByNineFrameLayout(context, attrs, defStyleAttr), DefaultLifecycleObserver {
 
     constructor(context: Context): this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet? = null): this(context, attrs, 0)
@@ -147,10 +145,13 @@ internal class LegacyYouTubePlayerView(context: Context, attrs: AttributeSet? = 
         addView(view)
     }
 
+    override fun onDestroy(owner: LifecycleOwner) {
+        release()
+    }
+
     /**
      * Call this method before destroying the host Fragment/Activity, or register this View as an observer of its host lifecycle
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun release() {
         removeView(youTubePlayer)
         youTubePlayer.removeAllViews()
@@ -161,14 +162,12 @@ internal class LegacyYouTubePlayerView(context: Context, attrs: AttributeSet? = 
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    internal fun onResume() {
+    override fun onResume(owner: LifecycleOwner) {
         playbackResumer.onLifecycleResume()
         canPlay = true
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    internal fun onStop() {
+    override fun onStop(owner: LifecycleOwner) {
         youTubePlayer.pause()
         playbackResumer.onLifecycleStop()
         canPlay = false

@@ -31,5 +31,10 @@
       <option name="name" value="MavenRepo" />
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven.songsterr.com" />
+      <option name="name" value="maven.songsterr.com" />
+      <option name="url" value="s3://maven.songsterr.com.s3.amazonaws.com/" />
+    </remote-repository>
   </component>
 </project>

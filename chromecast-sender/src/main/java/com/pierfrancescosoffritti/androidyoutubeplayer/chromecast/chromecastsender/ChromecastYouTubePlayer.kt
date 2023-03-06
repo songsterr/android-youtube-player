@@ -8,7 +8,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayerBridge
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.toFloat
 
 class ChromecastYouTubePlayer internal constructor(private val chromecastCommunicationChannel: ChromecastCommunicationChannel) : YouTubePlayer, YouTubePlayerBridge.YouTubePlayerBridgeCallbacks {
 
@@ -105,13 +104,17 @@ class ChromecastYouTubePlayer internal constructor(private val chromecastCommuni
     override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) {
         val message = JSONUtils.buildFlatJson(
             "command" to ChromecastCommunicationConstants.SET_PLAYBACK_RATE,
-            "playbackRate" to playbackRate.toFloat().toString()
+            "playbackRate" to playbackRate.rate.toString()
         )
 
         chromecastCommunicationChannel.sendMessage(message)
     }
 
-    override fun addListener(listener: YouTubePlayerListener): Boolean = youTubePlayerListeners.add(listener)
-    override fun removeListener(listener: YouTubePlayerListener): Boolean = youTubePlayerListeners.remove(listener)
+    override fun addListener(listener: YouTubePlayerListener) {
+        youTubePlayerListeners.add(listener)
+    }
+    override fun removeListener(listener: YouTubePlayerListener) {
+        youTubePlayerListeners.remove(listener)
+    }
     override fun getListeners(): MutableCollection<YouTubePlayerListener> = youTubePlayerListeners
 }
