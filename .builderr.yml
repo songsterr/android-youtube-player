@@ -1,13 +1,7 @@
-pipeline:
-  test:
-    image: hub.terra.songsterr.com/builderr-android
-    commands:
-      - ./gradlew --console=plain testDebug --stacktrace
-    artifacts:
-      - usertesting/build/reports/tests
-    message: |
-      <${BUILDERR_ARTIFACTS_LINK}/tests/testDebugUnitTest|Unit test report>
-
+channel: '#sra-builds'
+clone:
+  tags: true
+workflows:
   publish:
     image: hub.terra.songsterr.com/builderr-android
     commands:
