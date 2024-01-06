@@ -6,6 +6,6 @@ workflows:
     on: farm
     pipeline:
       publish:
-        image: hub.terra.songsterr.com/builderr-android
+        image: hub-eu.terra.songsterr.com/builderr-android
         commands:
           - ./gradlew publish --stacktrace
