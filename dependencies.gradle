@@ -1,7 +1,7 @@
 ext.versions = [
         // Project
         minSdk                          : 17,
-        compileSdk                      : 31,
+        compileSdk                      : 34,
 
         // Plugins
         gradlePlugin                    : '7.0.4',
