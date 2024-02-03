@@ -28,6 +28,8 @@ class YouTubePlayerView(context: Context, attrs: AttributeSet? = null, defStyleA
 
     // this is a publicly accessible API
     var enableAutomaticInitialization: Boolean
+    val isInitialized: Boolean
+        get() = legacyTubePlayerView.isYouTubePlayerReady
 
     init {
         addView(legacyTubePlayerView, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
