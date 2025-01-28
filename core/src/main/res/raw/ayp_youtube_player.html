@@ -51,7 +51,10 @@
     				onStateChange: function(event) { sendPlayerStateChange(event.data) },
     				onPlaybackQualityChange: function(event) { YouTubePlayerBridge.sendPlaybackQualityChange(event.data) },
     				onPlaybackRateChange: function(event) { YouTubePlayerBridge.sendPlaybackRateChange(event.data) },
-    				onError: function(error) { YouTubePlayerBridge.sendError(error.data, player.getVideoData()) },
+    				onError: function(error) {
+    				    var videoDataError, videoDataError = player.getVideoData()
+    				    YouTubePlayerBridge.sendError(error.data, videoDataError)
+                    },
     				onApiChange: function(event) { YouTubePlayerBridge.sendApiChange() }
     			},
 
