@@ -52,8 +52,8 @@
     				onPlaybackQualityChange: function(event) { YouTubePlayerBridge.sendPlaybackQualityChange(event.data) },
     				onPlaybackRateChange: function(event) { YouTubePlayerBridge.sendPlaybackRateChange(event.data) },
     				onError: function(error) {
-    				    var videoData, videoDataError = player.getVideoData()
-    				    YouTubePlayerBridge.sendError(error.data, videoDataError)
+    				    YouTubePlayerBridge.sendVideoData(JSON.stringify(player.getVideoData()))
+    				    YouTubePlayerBridge.sendError(error.data)
                     },
     				onApiChange: function(event) { YouTubePlayerBridge.sendApiChange() }
     			},
@@ -65,6 +65,8 @@
 
     	function sendPlayerStateChange(playerState) {
             clearTimeout(timerId);
+
+            YouTubePlayerBridge.sendVideoData(JSON.stringify(player.getVideoData()))
 
             switch (playerState) {
             	case YT.PlayerState.UNSTARTED:
