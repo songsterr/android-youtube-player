@@ -1,10 +1,10 @@
 ext.versions = [
         // Project
-        minSdk                          : 17,
+        minSdk                          : 24,
         compileSdk                      : 34,
 
         // Plugins
-        gradlePlugin                    : '7.0.4',
+        gradlePlugin                    : '8.7.3',
         dexCount                        : '3.0.1',
         gradleNexus                     : '1.1.0',
         dokka                           : '1.6.0',

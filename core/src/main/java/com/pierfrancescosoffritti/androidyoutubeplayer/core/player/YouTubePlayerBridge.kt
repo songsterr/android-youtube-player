@@ -97,8 +97,14 @@ class YouTubePlayerBridge(private val youTubePlayerOwner: YouTubePlayerBridgeCal
     }
 
     @JavascriptInterface
-    fun sendError(error: String) {
-        val playerError = parsePlayerError(error)
+    fun sendError(error: String, videoData: Any? = null) {
+        var playerError = parsePlayerError(error)
+        if (
+            playerError == PlayerConstants.PlayerError.VIDEO_NOT_PLAYABLE_IN_EMBEDDED_PLAYER
+            && videoData == null
+        ) {
+            playerError = PlayerConstants.PlayerError.SUSPICIOUS_REQUEST
+        }
 
         mainThreadHandler.post {
             for (listener in youTubePlayerOwner.getListeners())
