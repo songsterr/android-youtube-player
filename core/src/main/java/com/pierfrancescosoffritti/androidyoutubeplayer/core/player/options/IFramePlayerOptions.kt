@@ -21,6 +21,10 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
         return playerOptions.getString(Builder.ORIGIN)
     }
 
+    internal fun getUserAgent(): String {
+        return playerOptions.optString(Builder.USER_AGENT, "")
+    }
+
     class Builder {
         companion object {
             private const val AUTO_PLAY = "autoplay"
@@ -36,6 +40,8 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
             private const val CC_LANG_PREF = "cc_lang_pref"
             private const val LIST = "list"
             private const val LIST_TYPE = "listType"
+            private const val DISABLE_KB = "disablekb"
+            const val USER_AGENT = "userAgent"
         }
 
         private val builderOptions = JSONObject()
@@ -51,6 +57,7 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
             addInt(IV_LOAD_POLICY, 3)
             addInt(MODEST_BRANDING, 1)
             addInt(CC_LOAD_POLICY, 0)
+            addInt(DISABLE_KB, 1)
         }
 
         fun build(): IFramePlayerOptions {
@@ -114,6 +121,11 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
          */
         fun origin(origin: String): Builder {
             addString(ORIGIN, origin)
+            return this
+        }
+
+        fun userAgent(userAgent: String): Builder {
+            addString(USER_AGENT, userAgent)
             return this
         }
 

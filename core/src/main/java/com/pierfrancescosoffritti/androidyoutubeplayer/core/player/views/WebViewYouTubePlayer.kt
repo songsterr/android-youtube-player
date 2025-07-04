@@ -3,6 +3,7 @@ package com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -102,6 +103,9 @@ internal class WebViewYouTubePlayer constructor(context: Context, attrs: Attribu
         settings.javaScriptEnabled = true
         settings.mediaPlaybackRequiresUserGesture = false
         settings.cacheMode = WebSettings.LOAD_DEFAULT
+        playerOptions.getUserAgent().takeIf { it.isNotBlank() }.let {
+            settings.userAgentString = it
+        }
 
         addJavascriptInterface(YouTubePlayerBridge(this), "YouTubePlayerBridge")
 

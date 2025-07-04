@@ -17,7 +17,7 @@
         <!-- defer forces the library to execute after the html page is fully parsed. -->
         <!-- This is needed to avoid race conditions, where the library executes and calls `onYouTubeIframeAPIReady` before the page is fully parsed. -->
         <!-- See #873 on GitHub -->
-        <script defer src="https://www.youtube.com/iframe_api"></script>
+        <script defer src="https://www.youtube.com/player_api"></script>
     </head>
 
     <body>
@@ -37,7 +37,7 @@
 
         var timerId;
 
-    	function onYouTubeIframeAPIReady() {
+    	function onYouTubePlayerAPIReady() {
 
             YouTubePlayerBridge.sendYouTubeIFrameAPIReady();
             
@@ -82,7 +82,7 @@
                     sendStateChange(PLAYING);
                     
                     startSendCurrentTimeInterval();
-                    sendVideoData(player);
+                    sendVideoDuration(player);
                     return;
 
                 case YT.PlayerState.PAUSED:
@@ -98,7 +98,7 @@
                     return;
             }
 
-            function sendVideoData(player) {
+            function sendVideoDuration(player) {
                 var videoDuration = player.getDuration();
 
                 YouTubePlayerBridge.sendVideoDuration(videoDuration);
@@ -123,7 +123,7 @@
                 timerId = setInterval(function() {
                     YouTubePlayerBridge.sendVideoCurrentTime( player.getCurrentTime() )
                     YouTubePlayerBridge.sendVideoLoadedFraction( player.getVideoLoadedFraction() )
-                }, 100 );
+                }, 1000/30 );
             }
         }
 
