@@ -4,7 +4,7 @@ ext.versions = [
         compileSdk                      : 34,
 
         // Plugins
-        gradlePlugin                    : '8.9.1',
+        gradlePlugin                    : '8.10.0',
         dexCount                        : '3.0.1',
         gradleNexus                     : '1.1.0',
         dokka                           : '1.6.0',
