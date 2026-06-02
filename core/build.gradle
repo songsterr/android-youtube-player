@@ -45,4 +45,4 @@ ext {
     PUBLISH_DESCRIPTION = 'YouTube Player library for Android, stable and customizable.'
 }
 
-apply from: "../scripts/withSourcesJar()-module.gradle"
+apply from: "../scripts/publish-module.gradle"
