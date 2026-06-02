@@ -73,5 +73,9 @@ afterEvaluate {
                 from components.release
             }
         }
+        // Ensure metadata generation waits for the sources jar to be built
+        tasks.matching { it.name.contains("generateMetadataFileForGpr") }.configureEach {
+            dependsOn androidSourcesJar
+        }
     }
 }
