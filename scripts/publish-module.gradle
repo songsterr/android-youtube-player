@@ -19,17 +19,6 @@ printf("\n--------VERSION DATA--------\n" +
         "- NAME: " + tagName + "\n----------------------------\n")
 
 
-task androidSourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    if (project.plugins.findPlugin("com.android.library")) {
-        from android.sourceSets.main.java.srcDirs
-        from android.sourceSets.main.kotlin.srcDirs
-    } else {
-        from sourceSets.main.java.srcDirs
-        from sourceSets.main.kotlin.srcDirs
-    }
-}
-
 tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
     pluginsMapConfiguration.set(
             ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
@@ -42,7 +31,6 @@ task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
 }
 
 artifacts {
-    archives androidSourcesJar
     archives javadocJar
 }
 
@@ -68,14 +56,9 @@ afterEvaluate {
                 groupId group
                 artifactId PUBLISH_ARTIFACT_ID
                 version tagName
-                artifact(androidSourcesJar)
 
                 from components.release
             }
-        }
-        // Ensure metadata generation waits for the sources jar to be built
-        tasks.matching { it.name.contains("generateMetadataFileForGpr") }.configureEach {
-            dependsOn androidSourcesJar
         }
     }
 }

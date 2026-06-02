@@ -26,6 +26,12 @@ android {
             'src/main/res-public'
         ]
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
