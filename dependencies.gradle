@@ -4,13 +4,13 @@ ext.versions = [
         compileSdk                      : 34,
 
         // Plugins
-        gradlePlugin                    : '8.10.0',
+        gradlePlugin                    : '8.13.2',
         dexCount                        : '3.0.1',
         gradleNexus                     : '1.1.0',
         dokka                           : '1.6.0',
 
         // Kotlin
-        kotlin                          : '1.6.0',
+        kotlin                          : '2.0.21',
 
         // AndroidX
         androidxCore                    : '1.4.2',
